@@ -1,0 +1,77 @@
+% !TeX root = ../main.tex
+
+% \usepackage[utf8]{inputenc}
+% \usepackage[main=vietnamese,english]{babel}
+% Font tiếng Việt
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\DeclareTextSymbolDefault{\DH}{T1}
+
+\usepackage{url}
+
+\usepackage{fontspec}
+% \setmainfont{Times New Roman}
+
+\usepackage{svg}
+
+\usepackage{listings}
+
+\usepackage{graphicx}
+\graphicspath{{./images}}
+
+% Tài liệu tham khảo
+\usepackage[
+    sorting=nty,
+    backend=bibtex,
+    defernumbers=true]{biblatex}
+\usepackage[unicode]{hyperref} % Bookmark tiếng Việt
+\addbibresource{references.bib}
+
+% Đổi tên mặc định
+\renewcommand{\chaptername}{Chương}
+\renewcommand{\figurename}{Hình}
+\renewcommand{\tablename}{Bảng}
+\renewcommand{\contentsname}{Mục lục}
+\renewcommand{\listfigurename}{Danh sách hình}
+\renewcommand{\listtablename}{Danh sách bảng}
+\renewcommand{\appendixname}{Phụ lục}
+
+% Định dạng chapter
+\usepackage{titlesec}
+\titleformat{\chapter}
+[display]
+{\normalfont\bfseries\large}{\chaptername \ \thechapter}{10pt}{\huge}
+\titlespacing*{\chapter}{0pt}{-10pt}{20pt} %khoảng cách giữa chapter và đầu trang
+
+\titleformat{\section}
+{\normalfont\bfseries\large}{\thesection}{1em}{}
+
+\titleformat{\subsection}
+{\normalfont\bfseries\normalsize}{\thesubsection}{1em}{}
+
+\usepackage{geometry} % For setting page margins
+\usepackage{setspace} % For adjusting line spacing
+\usepackage{parskip} % For setting paragraph spacing
+\usepackage{indentfirst} % For indenting the first line of a paragraph
+
+% --- Page Margins ---
+\geometry{
+    top=2.5cm,
+    bottom=3cm,
+    left=3cm,
+    right=2cm,
+}
+
+% --- Line Spacing ---
+\linespread{1.3} % Equivalent to 1.3 lines spacing
+
+% --- Paragraph Spacing ---
+\setlength{\parskip}{6pt plus 0pt minus 0pt} % 6pt spacing between paragraphs
+
+% --- Paragraph Indentation ---
+\setlength{\parindent}{1cm} % 1cm indentation for the first line of each paragraph
+
+% Trang bìa
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\newcommand\HRule{\rule{\textwidth}{1pt}}

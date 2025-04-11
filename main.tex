@@ -1,0 +1,44 @@
+\documentclass[oneside,a4paper,13pt]{extreport}
+
+\input{styles/style}
+
+% ========================================================================================= %
+% CHÚ Ý: Thông tin chung về KLTN - sinh viên điền vào đây để tự động update các trang khác  %
+% ========================================================================================= %
+\newcommand{\tenSV}{Lương~Nhật~Hào} % Dấu ~ là khoảng trắng không được tách (các chữ nối với nhau bằng dấu ~ sẽ nằm cùng 1 dòng
+\newcommand{\mssv}{21020196}
+\newcommand{\tenKL}{Sử~dụng~LaTeX trong Khoá~luận~tốt~nghiệp} % Chú ý dấu ~ trong tên khóa luận
+\newcommand{\tenGVHD}{Phạm~Mạnh~Linh}
+\newcommand{\tenBM}{Công~nghệ~thông~tin-Mạng~máy~tính}
+\begin{document}
+
+\input{cover/outside.tex}
+\input{cover/inside.tex}
+
+
+% Mục lục, danh sách hình, danh sách bảng
+\addcontentsline{toc}{chapter}{Mục lục}
+\tableofcontents
+\listoffigures
+\listoftables
+
+\input{chapters/00.tex}
+\input{chapters/01.tex}
+
+\input{chapters/04}
+
+% In tài liệu tham khảo
+\addcontentsline{toc}{chapter}{Tài liệu tham khảo}
+\printbibheading[title={Tài liệu tham khảo}]
+
+%\printbibliography[heading=subbibliography, title={Tiếng Việt}, keyword=\textbf{Tieng}, resetnumbers=true]
+
+\DeclareNameAlias{sortname}{family-given}
+\DeclareNameAlias{default}{family-given}
+
+\printbibliography[heading=subbibliography, title={Tiếng Anh}, notkeyword=Tieng, resetnumbers=1]
+% ===================================================================== %
+% CHÚ Ý: phải gán lại resetnumbers=số tài liệu tham khảo tiếng Việt + 1 %
+% ===================================================================== %
+
+\end{document}
