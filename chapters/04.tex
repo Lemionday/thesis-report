@@ -25,7 +25,7 @@ Chương này sẽ giới thiệu về mô hình thiết kế và phương pháp
 
 \subsection{Hệ thống xử lý dữ liệu lên AWS}
 Hệ thống xử lý dữ liệu bao gồm 4 máy ảo (1 core, 1vCPU) chạy dịch vụ Storm supervisor. Để đơn giản hóa việc triển khai, ta có thể coi việc bật/tắt các dịch vụ Storm supervisor tương đương với việc thêm/xóa các máy ảo chạy dịch vụ Storm supervisor.
-Trên các máy ảo này sẽ được cài thêm chương trình \autocite{node-exporter} để thu thập các thông số của máy ảo nhằm cung cấp cho prometheus để đánh giá hiệu năng hệ thống và storm-forecast để dự đoán hệ thống.
+Trên các máy ảo này sẽ được cài thêm chương trình \autocite{prometheus_node_exporter} để thu thập các thông số của máy ảo nhằm cung cấp cho prometheus để đánh giá hiệu năng hệ thống và storm-forecast để dự đoán hệ thống.
 
 \subsection{Hệ thống theo dõi số liệu}
 
@@ -63,7 +63,7 @@ Nhằm đảm bảo môi trường mô phỏng là có độ chính xác cao và
 
 \subsection{Đo độ trễ trên hệ thống cloud}
 
-Công cụ đo độ trễ được sử dụng là ping\autocite{enwiki:1281794342}.
+Công cụ đo độ trễ được sử dụng là ping\autocite{ping_utility}.
 
 Đo độ trễ giữa supervisor và nimbus. Ta đứng trên host supervisor-1.
 \begin{lstlisting}

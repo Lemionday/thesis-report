@@ -1,16 +1,13 @@
 % !TeX root = ../main.tex
 
-% \usepackage[utf8]{inputenc}
-% \usepackage[main=vietnamese,english]{babel}
-% Font tiếng Việt
-\usepackage[T5]{fontenc}
-\usepackage[utf8]{inputenc}
-\DeclareTextSymbolDefault{\DH}{T1}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{vietnamese}
+\setotherlanguages{english}
+\setmainfont{Times New Roman}
+\fontsize{13pt}{15.6pt}\selectfont % 13pt font with 1.2 line spacing
 
 \usepackage{url}
-
-\usepackage{fontspec}
-% \setmainfont{Times New Roman}
 
 \usepackage{svg}
 
@@ -22,7 +19,7 @@
 % Tài liệu tham khảo
 \usepackage[
     sorting=nty,
-    backend=bibtex,
+    % backend=bibtex,
     defernumbers=true]{biblatex}
 \usepackage[unicode]{hyperref} % Bookmark tiếng Việt
 \addbibresource{references.bib}

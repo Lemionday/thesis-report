@@ -1,4 +1,4 @@
-\chapter{Mở đầu}
+\chapter{Giới thiệu}
 
 \section{Đặt vấn đề}
 
@@ -17,3 +17,64 @@ Nhiều hệ thống xử lý luồng dữ liệu thời gian thực, điển h�
 Từ đây, vấn đề được đặt ra là: Làm sao để hệ thống có khả năng co dãn linh hoạt, chủ động - vừa tối ưu tài nguyên, vừa đảm bảo hiệu năng ổn định - không chỉ ở thời điểm hiện tại mà còn thích ứng tốt trong tương lai khi cả quy mô hệ thống lẫn khối lượng dữ liệu đều sẽ tăng theo thời gian?
 
 Trên cơ sở đó, nghiên cứu này đề xuất giải pháp về co giãn tài nguyên đa cấp độ theo hướng chủ động, đồng thời vẫn tận dụng các ưu điểm vượt trội về khả năng xử lý thời gian thực, khả năng chịu lỗi và đảm bảo dữ liệu của hệ thống SmartHome đã được triển khai trên nền tảng Apache Storm.
+
+\section{Mô tả bài toán}
+
+Từ bài toán xử lý luồng dữ liệu lớn trong các hệ thống Smarthome thời gian thực, yêu cầu đặt ra là xây dựng một nền tảng xử lý dữ liệu mạnh mẽ, có khả năng phản hồi nhanh, chính xác và đặc biệt linh hoạt trong việc phân bổ tài nguyên.
+
+Apache Storm - một hệ thống xử lý luồng dữ liệu nổi tiếng với khả năng xử lý dữ liệu đa luồng (parallelism), theo thời gian thực, phân tán và chịu lỗi - là lựa chọn phù hợp cho việc xử lý các lượng dữ liệu được truyền về từ các cảm biến hệ thống SmartHome. Tuy được thiết kế để xử lý dữ liệu phân tán rất tốt nhưng hạn chế đáng kể của Apache Storm nằm ở chỗ: nó không được thiết kế với cơ chế co giãn tài nguyên tự động và hoàn toàn phụ thuộc vào cấu hình cố định của kiến trúc hệ thống máy ảo hoặc vật lý nơi nó được triển khai.
+
+Trong khi đó, public cloud (điện toán đám mây công cộng) lại nổi bật với khả năng mở rộng linh hoạt - một trong những đặc tính cốt lõi của điện toán đám mây hiện đại. Chính đặc tính này đã tạo nên một sự kết hợp hoàn hảo giữa Apache Storm với hạ tầng public cloud, thông qua public cloud, ta có thể bổ sung cho Apache Storm một khả năng mà bản thân nó không có - có giãn tài nguyên theo tải dữ liệu.
+
+Đặc biệt, trong giải pháp đề xuất, các máy ảo trên đám mây được tổ chức và quản lý dưới dạng một cụm Docker (Docker cluster), bao gồm nhiều node. Tại đây, mỗi node sẽ tương ứng với một hoặc nhiều supervisor trong hệ thống Storm và toàn bộ cụm có thể được tùy biến điều chỉnh thông qua docker API rất thuận tiện trong việc quản lý. Việc sử dụng Docker giúp tạo ra một kiến trúc thống nhất, có thể hoạt động trong nhiều môi trường bất kể là điện toán đám mây hay hệ thống máy chủ có sẵn. Không những vậy, Docker còn tạo điều kiện thuận lợi cho việc tự động hóa co giãn tài nguyên ở cả mức hệ thống và dịch vụ.
+
+Thông qua giải pháp học tăng cường, tác giả muốn giải quết bài toán được đặt ra là: Làm thế nào để tích hợp khả năng co giãn chủ động - dựa trên học tăng cường q-learning - vào hệ thống xử lý dữ liệu thời gian thực Apache Storm nhằm khai thác tối đa tính mở rộng linh hoạt của public cloud?
+
+Giải quyết bài toán này không chỉ giúp tối ưu vận hành cho ứng dụng Smarthome trong môi trường thực tiễn, mà còn nghiên cứu về xu hướng phát triển nổi bật của các hệ thống xử lý dữ liệu IoT hiện nay khi tích hợp các nền tảng xử lý dữ liệu phân tán với khả năng mở rộng linh hoạt của public cloud.
+
+\section{Đóng góp của đồ án}
+
+% TODO:
+
+\section{Cấu trúc đồ án}
+
+Đồ án này gồm 5 chương, nội dung tương ứng của các chương như sau:
+
+\begin{itemize}
+    \item Chương 1: Giới thiệu.
+          \begin{itemize}
+              \item Tổng quan về Smarthome và nhu cầu co giãn tài nguyên.
+              \item Mô tả bài toán và mục tiêu của đồ án.
+              \item Đóng góp và cấu trúc đồ án.
+          \end{itemize}
+
+    \item Chương 2: Tổng quan về công nghệ và cơ sở lý thuyết.
+          \begin{itemize}
+              \item MQTT và các giao thức truyền tải dữ liệu.
+              \item Tổng quan về công nghệ xử lý dữ liệu và công nghệ giám sát.
+              \item Cơ sở lý thuyết của học tăng cường q-learning.
+              \item Điện toán đám mây và các dịch vụ liên quan.
+          \end{itemize}
+
+    \item Chương 3: Thiết kế và triển khai hệ thống.
+          \begin{itemize}
+              \item Thiết kế hệ thống co giãn tài nguyên dựa trên học tăng cường q-learning.
+              \item Thiển khai hệ thống huấn luyện và thực nghiệm.
+              \item Thiết lập mô hình giám sát, quản lý, đánh giá hiệu quả hệ thống co dãn.
+          \end{itemize}
+
+    \item Chương 4: Thử nghiệm và đánh giá
+          \begin{itemize}
+              \item Thiết kế các kịch bản thử nghiệm.
+              \item Đánh giá hiệu suất hệ thống.
+              \item Đánh giá chi phí vận hành và khả năng tối ưu hóa.
+              \item Phân tích khả năng mở rộng của hệ thống.
+          \end{itemize}
+
+    \item Chương 5: Kết luận và hướng phát triển
+          \begin{itemize}
+              \item Tổng kết các kết quả và đóng góp của đồ án.
+              \item Thảo luận về các thách thức và hạn chế.
+              \item Đề xuất các hướng nghiên cứu và phát triển trong tương lai.
+          \end{itemize}
+\end{itemize}
