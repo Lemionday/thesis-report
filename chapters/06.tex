@@ -1,0 +1,19 @@
+\chapter{Kết luận và định hướng phát triển}
+
+\section{Kết luận}
+
+Giải pháp \tenKL có nhiều ưu điểm vượt trội. Đầu tiên, hệ thống đã có cơ chế tự co dãn các supervisor chủ động giúp tự động hóa quá trình tối ưu tài nguyên, không yêu cầu người vận hành phải tác động trực tiếp giúp giảm tỷ lệ sai sót nhưng cũng đồng thời cải thiện tốc độ triển khai khi các thao tác co dãn có thể được thực hiện song song trên nhiều máy ảo, điều mà nếu vận hành thủ công sẽ không thể làm được. Thứ hai, hệ thống đã chủ động co dãn tài nguyên để đáp ứng với khối lượng tải thay đổi theo thời gian giúp ổn định độ trễ, giảm tải giữa các supervisor giúp chúng tránh bị quá tải hoặc gây lãng phí tài nguyên khi khối lượng công việc được phân phối quá thấp. Tiếp đó, giải pháp cũng cung cấp một môi trường mô phỏng chung cho hệ thống, giúp việc áp dụng các thuật toán mới có hiệu quả, năng suất tốt hơn một cách dễ dàng, hệ thống co dãn cùng với thu thập dữ liệu đều được triển khai trên nhiều môi trường cục bộ lẫn điện toán đám mây, điều này gợi ý rằng các môi trường mới trong tương lai có thể áp dụng cùng một giao diện tương tác này giúp giảm thời gian, chi phí phát triển.
+
+Tuy nhiên, cơ chế co dãn vẫn còn nhiều hạn chế. Có thể kể đến, trong quá trình co dãn tài nguyên, các supervisor sẽ tiêu tốn nhiều CPU để tiến hành các quy trình đăng ký và tham gia vào topology. Thêm vào đó là quá trình tái cấu trúc lại topology còn khiến cho các luồng dữ liệu bị ngừng tạm thời, gây nguy cơ mất mát dữ liệu nếu không điều phối chuẩn. Các supervisor được khởi tạo và dừng liên tục cũng khiến chúng rơi vào danh sách đen, không được phân phối công việc và topology khi bị thiếu worker sẽ khiến chúng không thể được triển khai. Ngoài ra, các tác động mặc dù đã đã ứng với sự biến đổi liên tục của môi trường nhưng có thể thấy có độ trễ nhất định, nguyên đến từ hai yếu tố cả khách quan lẫn chủ quan. Đối với nguyên nhân khách quan, các chỉ số của topology được cập nhật theo cửa sổ tối thiểu 10 phút, trong khi khoảng thời gian giữa các lần tác động của hệ thống chỉ là 30 giây, điều này gây khó cả đánh giá trạng thái của môi trường và đánh giá kết quả của hành động. Thêm vào đó, thuật toán học tăng cường Q-learning cổ điển đòi hỏi thời gian huấn luyện lớn để lấp đầy không gian trạng thái, do giới hạn thời gian cùng với việc sử dụng tài nguyên của môi trường điện toán đám mây không cho phép. Còn với nguyên nhân chủ quan, các hàm đánh giá giá trị chưa thực sự được tối ưu hiệu quả phản ánh rõ về môi trường của hệ thống đã có phần ảnh hưởng đến phán đoán của tác nhân.
+
+\section{Định hướng phát triển cho đề tài nghiên cứu trong tương lai}
+
+Dựa trên ưu, nhược điểm của giải pháp \tenKL như đã nêu ở phần trên, một số định hướng khả thi giúp phát triển đề tài nghiên cứu này trong tương lai có thể kể đến:
+
+\begin{itemize}
+    \item Ứng dụng các thuật toán học tăng cường tích hợp học sâu giúp tăng hiệu quả trong các bài toán phức tạp như hệ thống xử lý dữ liệu SmartHome này.
+    \item Nâng cấp số lượng trạng thái môi trường: Thông qua theo dõi nhiều trạng thái gần kề theo thời gian đồng thời sử dụng nhiều chỉ số đầu vào trạng thái hệ thống để đưa ra các đánh giá chính xác hơn thay vì sử dụng duy nhất trạng thái hiện tại làm đầu vào cho đánh giá.
+    \item Ứng dụng thêm các phương pháp co dãn: Không chỉ co dãn các supervisor và các máy ảo chạy supervisor với cấu hình cố định, hệ thống co dãn sẽ cho phép sử dụng các máy ảo mạnh hơn với cấu hình supervisor tùy biến theo nhu cầu, giúp giảm gánh nặng chi phí hoạt động.
+    \item Kết hợp ứng dụng nhiều phương pháp dự đoán: Ứng dụng thêm các phương pháp học máy khác để đưa ra dự đoán trong trung và dài hạn để đáp ứng nhu cầu sử dụng tài nguyên khi hệ thống phát triển trong tương lai.
+    \item Quan sát, phân tích hệ thống sâu hơn để phát triển các chỉ số riêng biệt giúp giám sát, đánh giá toàn diện hiệu suất hệ thống.
+\end{itemize}

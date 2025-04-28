@@ -2,3 +2,8 @@
 build
 indent.log
 *.webp
+_minted-main
+svg-inkscape
+main.log
+*.bkp
+draw-io/.$deployment.drawio.dtmp

@@ -1,0 +1,22 @@
+\usepackage{listings}
+
+\lstdefinelanguage{HCL}{
+    keywords={resource, data, provider, module, variable, output, locals, terraform, required_providers, backend, provisioner, depends_on, count, for_each, if, each, sensitive, type, default, description},
+    keywordstyle=\color{blue}\bfseries,
+    ndkeywords={true, false, null},
+    ndkeywordstyle=\color{magenta}\bfseries,
+    identifierstyle=\color{black},
+    commentstyle=\color{gray}\textit,
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\scriptsize\color{black},
+    stepnumber=1,
+    numbersep=8pt,
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=2,
+    basicstyle=\ttfamily\footnotesize,
+    moredelim=[is][\color{darkgray}]{<<}{>>}, % For custom delimiters if needed
+    moredelim=[l][\color{ForestGreen}]{//},    % For single-line comments
+    moredelim=[s][\color{ForestGreen}]{/*}{*/}, % For multi-line comments
+}

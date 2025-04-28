@@ -1,40 +1,65 @@
 \begin{titlepage}
-  \addcontentsline{toc}{chapter}{TÓM TẮT}
-  \begin{center}
-    \textbf{\fontsize{12}{14.4}\selectfont{TÓM TẮT}}
-  \end{center}
+    \addcontentsline{toc}{chapter}{TÓM TẮT}
+    \begin{center}
+        \textbf{\fontsize{12}{14.4}\selectfont{TÓM TẮT}}
+    \end{center}
 
-  \fontsize{12}{14.4}\selectfont{
-    Hiện nay
-  }
+    \fontsize{12}{14.4}\selectfont{
+        Trong bối cảnh cuộc sống hiện đại, các thiết bị thông minh ngày càng phổ biến, hình thành nên hệ sinh thái nhà thông minh (SmartHome) dựa trên Internet vạn vật (IoT). Tuy nhiên, việc xử lý dữ liệu thời gian thực từ các cảm biến đặt ra thách thức về hiệu năng và khả năng mở rộng của hệ thống, đặc biệt khi nhiều nền tảng xử lý dữ liệu phân tán hiện nay chưa tích hợp sẵn cơ chế co giãn linh hoạt.​
 
-  \noindent\textbf{Từ khóa}: Điện toán đám mây, Co dãn chủ động, Nhà thông minh.
+        Bài toán đặt ra là làm thế nào để tận dụng hiệu quả lượng dữ liệu lớn từ các cảm biến nhằm dự đoán nhu cầu tài nguyên hệ thống trong tương lai, từ đó đưa ra các quyết định điều chỉnh kịp thời, tối ưu chi phí mà vẫn đảm bảo hiệu suất vận hành. Đối với các hệ thống xử lý dữ liệu phức tạp như nhà thông minh, học tăng cường (Reinforcement Learning) nổi lên như một giải pháp tiềm năng. Khác với các phương pháp học máy truyền thống, học tăng cường cho phép hệ thống tự tương tác với môi trường để nhận phản hồi, không yêu cầu xử lý dữ liệu đầu vào phức tạp hay phân tích chi tiết mô hình hệ thống, từ đó tìm ra chiến lược tối ưu.​
 
-  \newpage
+        Đồ án này đề xuất một giải pháp co giãn tài nguyên đa cấp độ chủ động cho ứng dụng Smarthome trong môi trường điện toán đám mây, với hai cấp độ: máy ảo và container phân bố trên máy ảo. Hệ thống được triển khai qua hai giai đoạn: huấn luyện và đánh giá hiệu năng, nhằm kiểm chứng khả năng thích ứng và tối ưu hóa tài nguyên của giải pháp đề xuất.
 
-  \addcontentsline{toc}{chapter}{Lời cảm ơn}
-  \begin{center}
-    \textbf{\fontsize{12}{14.4}\selectfont\uppercase{{Lời cảm ơn}}}
-  \end{center}
+    }
+    \noindent\textbf{Từ khóa}: Điện toán đám mây, Co dãn chủ động, Nhà thông minh, Học tăng cường.
 
-  Lời đầu tiên, em xin bày tỏ lòng biết ơn sâu sắc đến giảng viên hướng dẫn - TS.Phạm Mạnh Linh, người đã tận tình hướng dẫn, chỉ bảo và truyền đạt những kiến thức quý báu trong suốt quá trình em thực hiện đồ án này. Đồng thời, em cũng xin cảm ơn giảng viên đồng hướng dẫn - Ths. Trần Anh Tú đã chỉ hướng, giải đáp, hỗ trợ em giúp em vượt qua những khó khăn trong việc nghiên cứu và hoàn thiện đồ án một cách tốt nhất.
+    \newpage
 
-  Em cũng xin chân thành cảm ơn các thầy, cô cùng bạn bè trong khoa Mạng máy tính và trường Đại học Công nghệ - Đại học Quốc gia Hà Nội đã tạo điều kiện về cơ sở vật chất, trang thiết bị và môi trường học tập lý tưởng để em có thể nghiên cứu và thực hiện đồ án này cũng như hướng dẫn, chỉ bảo em trong suốt thời gian học tập tại trường.
+    \addcontentsline{toc}{chapter}{Lời cảm ơn}
+    \begin{center}
+        \textbf{\fontsize{12}{14.4}\selectfont\uppercase{{Lời cảm ơn}}}
+    \end{center}
 
-  Cuối cùng, em xin gửi lời cảm ơn đến bạn bè, đồng nghiệp, người thân vì sự hỗ trợ nhiệt tình, những ý kiến đóng góp quý báu kèm với sự động viên tinh thân vô cùng to lớn mà họ đã dành cho em trong suốt thời gian qua.
+    Lời đầu tiên, em xin bày tỏ lòng biết ơn sâu sắc đến giảng viên hướng dẫn - TS.Phạm Mạnh Linh, người đã tận tình hướng dẫn, chỉ bảo và truyền đạt những kiến thức quý báu trong suốt quá trình em thực hiện đồ án này. Đồng thời, em cũng xin cảm ơn giảng viên đồng hướng dẫn - Ths. Trần Anh Tú đã chỉ hướng, giải đáp, hỗ trợ em giúp em vượt qua những khó khăn trong việc nghiên cứu và hoàn thiện đồ án một cách tốt nhất.
 
-  \begin{flushright}
-    \begin{minipage}{0.6\linewidth}
-      \begin{center}
-        Hà Nội, ngày  tháng  năm 2025\\
-        Sinh viên\\
-        \vspace{2cm}
-        Lương Nhật Hào
-      \end{center}
-    \end{minipage}
-  \end{flushright}
+    Em cũng xin chân thành cảm ơn các thầy, cô cùng bạn bè trong khoa Mạng máy tính và trường Đại học Công nghệ - Đại học Quốc gia Hà Nội đã tạo điều kiện về cơ sở vật chất, trang thiết bị và môi trường học tập lý tưởng để em có thể nghiên cứu và thực hiện đồ án này cũng như hướng dẫn, chỉ bảo em trong suốt thời gian học tập tại trường.
 
-  % Abbreviation
-  % public cloud
-  % CI/CD
+    Cuối cùng, em xin gửi lời cảm ơn đến bạn bè, đồng nghiệp, người thân vì sự hỗ trợ nhiệt tình, những ý kiến đóng góp quý báu kèm với sự động viên tinh thân vô cùng to lớn mà họ đã dành cho em trong suốt thời gian qua.
+
+    \begin{flushright}
+        \begin{minipage}{0.6\linewidth}
+            \begin{center}
+                Hà Nội, ngày  tháng  năm 2025\\
+                Sinh viên\\
+                \vspace{2cm}
+                Lương Nhật Hào
+            \end{center}
+        \end{minipage}
+    \end{flushright}
+
+    \newpage
+    \addcontentsline{toc}{chapter}{Lời cam đoan}
+    \begin{center}
+        \textbf{\fontsize{12}{14.4}\selectfont\uppercase{{Lời cam đoan}}}
+    \end{center}
+
+    Tôi xin cam đoan rằng khóa luận tốt nghiệp với đề tài "\tenKL" là công trình nghiên cứu do chính tôi thực hiện. Các số liệu, kết quả và tài liệu trình bày trong khóa luận đều trung thực và chưa từng được công bố trong bất kỳ công trình nào khác, trừ những tài liệu tham khảo đã được trích dẫn rõ ràng trong danh mục tài liệu tham khảo.
+
+    Tôi xin chịu hoàn toàn trách nhiệm về tính chính xác và trung thực của nội dung khóa luận này.
+    \begin{flushright}
+        \begin{minipage}{0.6\linewidth}
+            \begin{center}
+                Hà Nội, ngày  tháng  năm 2025\\
+                Sinh viên\\
+                \vspace{2cm}
+                Lương Nhật Hào
+            \end{center}
+        \end{minipage}
+    \end{flushright}
+    \newpage
+
+    % Abbreviation
+    % public cloud
+    % CI/CD
 \end{titlepage}

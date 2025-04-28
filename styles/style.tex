@@ -9,12 +9,18 @@
 
 \usepackage{url}
 
-\usepackage{svg}
-
 \usepackage{listings}
+\usepackage[dvipsnames]{xcolor}
+\input{styles/listing_golang}
+\input{styles/listing_yaml}
+\input{styles/listing_hcl}
 
+\usepackage{svg}
 \usepackage{graphicx}
-\graphicspath{{./images}}
+\graphicspath{{./images/}{./topologies/images/}}
+\usepackage[export]{adjustbox}
+\usepackage{float}
+\usepackage{booktabs}
 
 % Tài liệu tham khảo
 \usepackage[
@@ -72,3 +78,7 @@
 \usepackage{tikz}
 \usetikzlibrary{calc}
 \newcommand\HRule{\rule{\textwidth}{1pt}}
+
+\usepackage{hyperref}
+
+\usepackage{amsmath}

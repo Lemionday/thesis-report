@@ -4,8 +4,28 @@ Trong chương này, đồ án sẽ trình bày các công nghệ và khái ni�
 
 Nội dung chính của chương 2 bao gồm:
 \begin{itemize}
+    \item Internet of Things
     \item Apache Storm
     \item Docker
+    \item Giám sát hệ thống (monitoring)
+    \item Đám mây công cộng (public cloud)
+    \item Công cụ quản lý cơ sở hạ tầng - Terraform
+    \item Học tăng cường Q-learning
+\end{itemize}
+
+\section{Internet of Things}
+
+Internet of Things (IoT) (Mạng lưới Vạn vật kết nối) là một khái niệm mô tả một hệ sinh thái nơi các vật thể vật lý không chỉ có thể kết nối và giao tiếp với nhau qua internet, mà còn có khả năng thu thập và truyền tải thông tin. Những vật thể này bao gồm thiết bị điện tử, phương tiện giao thông, đồ gia dụng, và thậm chí là những vật thể được trang bị cảm biến, phần mềm và kết nối mạng. Trên cơ sở này, chúng có thể tự động thu thập và chia sẻ dữ liệu mà không cần sự can thiệp của con người. Điều này giúp tăng cường khả năng tự động hóa và quản lý thông minh trong các lĩnh vực như nhà thông minh, giao thông thông minh, và chăm sóc sức khỏe thông minh.
+
+Ví dụ: Một chiếc máy giặt thông minh có thể kết nối với ứng dụng trên điện thoại để báo cho bạn biết khi nào cần thay màng lọc hoặc khi quả trình giặt hoàn tất, toàn bộ những hành động này đều dựa trên dữ liệu thu thập được từ các cảm biến bên trong máy, thông qua kết nối mạng gửi đến trung tâm xử lý và gửi thông báo về các thiết bị của người dùng.
+
+Nhờ tiềm năng to lớn của mình, các ứng dụng của  trải dài trên nhiều lĩnh vực và các mặt cửa đời sống xã hội, có thể kể đến như:
+
+\begin{itemize}
+    \item Giám sát các điều kiện môi trường trong nông trại.
+    \item Quản lý các mô hình giao thông với ô tô thông minh và các thiết bị tự hành thông minh khác.
+    \item Kiểm soát các máy móc và quy trình trong nhà máy.
+    \item Theo dõi tồn kho và các lô hàng trong kho.
 \end{itemize}
 
 \section{Apache Storm}
@@ -50,11 +70,17 @@ Các trường hợp sử dụng của xử lý luồng:
 \end{itemize}
 Đặc biệt, xử lý luồng tỏ ra đặc biệt phù hợp để xử lý dữ liệu từ các thiết bị IoT, như nhiệt kế thông minh, công cụ theo dõi sức khỏe, cho phép phản xạ lập tức với các thay đổi trong môi trường xung quanh thiết bị.
 
-\subsection{Các thành tố của cụm Apache Storm}
+\subsection{Các thành phần của cụm Apache Storm}
 
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics{storm-cluster.png}
+        \caption{Các thành phần trong cụm Storm và liên hệ giữa các thành phần}
+    \end{center}
+\end{figure}
 \includegraphics{storm-cluster.png}
 
-Theo trang chủ Apache Storm \autocite{apachestorm}, các thành tố chính của cụm Apache Storm bao gồm: Nimbus, Supervisor, Zookeeper.
+Theo trang chủ Apache Storm \autocite{apachestorm}, các thành phần chính của cụm Apache Storm bao gồm: Nimbus, Supervisor, Zookeeper.
 
 Có 2 loại nút trong cụm Storm: nút chủ (master node) và nút thực thi (worker node).
 
@@ -64,11 +90,25 @@ Nút thực thi chạy tiên trình "supervisor", chịu trách nhiệm thực t
 
 Nút Zookeeper, chạy tiến trình "zookeeper", tuy các tiến trình này không được thiết kế dành riêng cho Apache Storm nhưng có vai trò đặc biệt, đóng vai trò điều phối viên giữa Nimbus và Supervisor. Thực tế rằng, cả Nimbus lẫn Supervisor đều là stateless và fail-fast nên có thể ví Zookeeper như trí nhớ của toàn bộ hệ thống. Zookeeper có trách nhiệm lưu trữ thông tin về trạng thái của các nút Nimbus và Supervisor trong cụm Storm. Thông tin này bao gồm trạng thái hoạt động, thông tin cấu hình, và các chi tiết liên quan đến các Topology đang chạy. Thông qua Zookeeper, Nimbus và các Supervisor có thể giao tiếp với nhau một cách dễ dàng, nhất quán, hiệu quả.
 
-Nhờ sử dụng kiến trúc master-slave điển hình đồng thời lưu trữ dữ liệu tại các nút Zookeeper, hệ thống cụm Storm có những ưu điểm tuyệt vời:
+Nhờ sử dụng kiến trúc master - slave điển hình đồng thời lưu trữ dữ liệu tại các nút Zookeeper, hệ thống cụm Storm có những ưu điểm tuyệt vời:
+
 \begin{itemize}
-    \item có sự ổn định đáng kinh ngạc.
+    \item Có sự ổn định đáng kinh ngạc.
     \item Trong một cụm, chỉ yêu cầu một nút chủ duy nhất do nút này là stateless (không lưu trữ dữ liệu).
     \item Tương tự như nút chủ, các nút thực thi cũng là stateless giúp tất cả chúng có thể được dễ dàng tái khởi động khi gặp lỗi, sự cố trong quá trình chạy
+\end{itemize}
+
+\subsection{Storm rebalance (tạm dịch: tái phân bổ Storm topology)}
+
+Trong hệ thống xử lý dữ liệu thời gian thực Apache Storm, một topology (luồng xử lý dữ liệu) được phân bổ và thực thi trên một cluster bao gồm nhiều supervisor node. Sự phân bổ này bao gồm việc gán các worker process và executor thread cho các thành phần (spout và bolt) của topology trên các node có sẵn khi topology được triển khai lần đầu. Tuy nhiên, theo thời gian hoặc do sự thay đổi trong môi trường hoạt động của cluster, như việc thêm hoặc bớt supervisor node, điều chỉnh mức độ song song (parallelism) của các spout/bolt, hoặc khi gặp phải tình trạng mất cân bằng tải giữa các node/worker, cấu hình phân bổ ban đầu có thể không còn tối ưu hoặc phù hợp.
+
+Để giải quyết vấn đề này, Apache Storm cung cấp một tính năng vận hành quan trọng gọi là Rebalance. Về bản chất, Rebalance là quá trình tái phân bổ lại (redistribute) các worker process và executor thread của một topology đang chạy hoặc đã tạm dừng trên các supervisor node có sẵn trong cluster. Mục đích chính của việc thực hiện Rebalance là:
+
+\begin{itemize}
+    \item Cân bằng tải (Load Balancing): Giúp phân phối đều khối lượng công việc và tài nguyên sử dụng trên toàn bộ cluster, tránh tình trạng một số node/worker bị quá tải trong khi các node/worker khác lại nhàn rỗi.
+    \item Thích ứng với sự thay đổi quy mô (Scaling Adaptation): Cho phép topology tận dụng hoặc điều chỉnh theo số lượng supervisor node đã thay đổi trong cluster (ví dụ: sau khi thêm node để tăng năng lực xử lý hoặc bớt node để tiết kiệm tài nguyên).
+    \item Tối ưu hiệu suất: Điều chỉnh lại sự phân bổ có thể cải thiện hiệu suất tổng thể và độ trễ xử lý của topology.
+    \item Phục hồi sau lỗi (trong một số trường hợp): Đôi khi Rebalance cũng có thể giúp khắc phục các vấn đề phân bổ phát sinh từ các lỗi không mong muốn.
 \end{itemize}
 
 \section{Docker}
@@ -118,12 +158,11 @@ Docker nhẹ và nhanh, có thể coi là một giải pháp thay thế khả th
 \subsection{Kiến trúc}
 Docker sử dụng mô hình kiến trúc client-server. Docker client gửi yêu cầu đến Docker daemon, thành phần xử lý toàn bộ các phần việc xây dựng, chạy và phân phối container. Client và daemon có thể chạy trên cùng một máy hoặc kết nối từ xa qua mạng. Chúng giao tiếp qua REST API thông qua socket UNIX hoặc giao diện mạng. Một thành phần quan trọng khác của Docker client là Docker Compose giúp quản lý ứng dụng gồm nhiều container (sẽ được đề cập đến sau đây).
 
-\begin{center}
-    \begin{figure}
-        \includegraphics[width=\textwidth]{docker-architecture.png}
-        \caption{Kiến trúc Docker}
-    \end{figure}
-\end{center}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{docker-architecture.png}
+    \caption{Kiến trúc Docker}
+\end{figure}
 
 
 \subsubsection{Tiến trình nền của Docker}
@@ -149,3 +188,157 @@ Container là bản thể chạy được của image. Người dùng có thể 
 Theo mặc định, một container được phân tách khá độc lập so với các container khác và cả máy chủ đang chạy chúng, tuy nhiên tất cả các yếu tố như mạng của của container, thiết bị lưu trữ hoặc các hệ thống con bên trong đều có thể được tùy chỉnh bởi người dùng.
 
 Do vậy, các container mở ra khả năng triển khai nhất quán, dễ dàng và hiệu quả trên mọi hạ tầng mà nó được triển khai.
+
+\subsection{Docker Compose}
+
+Docker Compose là một công cụ hỗ trợ định nghĩa và quản lý các ứng dụng đa container một cách dễ dàng. Bằng cách sử dụng tệp cấu hình YAML, người dùng có thể mô tả toàn bộ các dịch vụ của ứng dụng, sau đó triển khai hoặc gỡ bỏ tất cả chỉ với một lệnh duy nhất.
+
+Điểm mạnh nổi bật của Compose là khả năng ghi lại toàn bộ kiến trúc ứng dụng trong một tệp duy nhất, thường đặt tại thư mục gốc của dự án. Điều này không chỉ giúp phiên bản hóa (version control) cấu hình dễ dàng mà còn cho phép người khác đóng góp vào dự án chỉ bằng cách sao chép mã nguồn và khởi động ứng dụng qua Compose. Thực tế, nhiều dự án hiện nay trên GitHub hay GitLab đã áp dụng cách tiếp cận này.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{docker-compose-illustration.png}
+    \caption{Minh họa kiến trúc của Docker Compose}
+    \footnotesize{Nguồn: https://blog.devops.dev/what-and-why-of-docker-compose-dc95314c74b8, 2025}
+\end{figure}
+
+\section{Giám sát hệ thống (monitoring)}
+
+Giám sát hệ thống là quá trình theo dõi liên tục trạng thái và hiệu suất của hạ tầng công nghệ thông tin, bao gồm máy chủ, ứng dụng, mạng và dịch vụ. Mục tiêu chính là phát hiện sớm các bất thường, dự báo sự cố, và đảm bảo hệ thống vận hành ổn định theo thời gian. Hoạt động này thường dựa trên việc thu thập và phân tích các chỉ số như mức sử dụng CPU, bộ nhớ, dung lượng đĩa, độ trễ mạng và trạng thái dịch vụ. Khi được triển khai hiệu quả, giám sát hệ thống giúp cải thiện độ tin cậy, tối ưu tài nguyên, và hỗ trợ phản ứng nhanh trước các vấn đề kỹ thuật. Không những vậy, hệ thống này có thể phát hiện các vấn đề tiềm ẩn sớm và khắc phục chúng trước khi có sự cố phát sinh. Đồ án này sẽ sử dụng hai công cụ giám sát hệ thống là Prometheus và Grafana.
+
+\begin{figure}[htbp]
+    \includegraphics[width=\textwidth]{prometheus-grafana-architect.png}
+    \caption{Sơ đồ kiến trúc tổng quan của hệ thống Prometheus và Grafana}
+    \footnotesize{Nguồn: https://prometheus.io/docs/introduction/overview/, 2025}
+\end{figure}
+
+\subsection{Prometheus}
+
+Prometheus \autocite{prometheus} là một bộ công cụ mã nguồn mở dùng để giám sát hệ thống và cảnh báo, ban đầu được phát triển tại SoundCloud. Kể từ khi ra đời vào năm 2012, Prometheus đã được nhiều tổ chức áp dụng rộng rãi và hiện sở hữu một cộng đồng phát triển và người dùng rất năng động.
+
+Prometheus thu thập và lưu trữ dữ liệu dưới dạng chuỗi thời gian (time series), tức mỗi chỉ số đều được gắn kèm theo dấu thời gian ghi nhận và tập hợp các cặp khóa–giá trị (labels) giúp phân loại thông tin chi tiết hơn.
+
+Các tính năng chính có thể kể đến của Prometheus bao gồm:
+\begin{itemize}
+    \item Là một mô hình dữ liệu đa chiều với dữ liệu chuỗi thời gian được nhận diện bởi tên chỉ số và các cặp khóa/giá trị.
+    \item Sử dụng PromQL, ngôn ngữ truy vấn linh hoạt để tận dụng các bản ghi dữ liệu đa chiều.
+    \item Tự động phát hiện các mục tiêu thu thập chỉ số thông qua cơ chế khám phá dịch vụ hoặc cấu hình tĩnh.
+    \item Thu thập dữ liệu theo mô hình kéo (pull) thông qua giao thức HTTP — một giao thức phổ biến, giúp Prometheus dễ dàng tích hợp với nhiều hệ thống và ứng dụng hiện có.
+\end{itemize}
+
+\subsection{Grafana}
+
+Grafana \autocite{redhatgrafana} là một nền tảng mã nguồn mở chuyên về trực quan hóa dữ liệu tương tác, được phát triển bởi Grafana Labs. Công cụ này cho phép người dùng trình bày dữ liệu dưới dạng biểu đồ và đồ thị, gộp lại trong một hoặc nhiều bảng điều khiển (dashboard), từ đó hỗ trợ việc phân tích và hiểu dữ liệu dễ dàng hơn. Từ đó, người dùng có thể hiểu rõ hơn về các mối quan hệ và tương quan giữa các dữ liệu — yếu tố đóng vai trò then chốt trong việc nhanh chóng xác định nguyên nhân gây ra sự cố hoặc các hành vi bất thường trong hệ thống.
+
+\subsubsection{Một số tính năng nổi bật}
+
+\begin{itemize}
+    \item Bảng điều khiển (Panels): Cho phép người dùng trực quan hóa dữ liệu theo nhiều hình thức đa dạng như biểu đồ cột, biểu đồ đường, bản đồ địa lý, bản đồ nhiệt,… tùy theo nhu cầu phân tích.
+    \item Plugin mở rộng: Cung cấp khả năng hiển thị dữ liệu theo thời gian thực từ nhiều nguồn khác nhau. Người dùng cũng có thể tạo plugin kết nối với API tùy chỉnh để truy xuất dữ liệu đặc thù.
+    \item Cảnh báo (Alerts): Một giao diện tập trung giúp cấu hình, tổng hợp và quản lý toàn bộ cảnh báo.
+    \item Biến đổi dữ liệu (Transformations): Hỗ trợ các thao tác như đổi tên, tóm tắt, kết hợp, và thực hiện các phép tính trên nhiều nguồn dữ liệu hoặc truy vấn khác nhau.
+\end{itemize}
+
+Grafana có khả năng truy vấn dữ liệu và thiết lập cảnh báo từ nhiều nguồn khác nhau như máy chủ truyền thống, cụm Kubernetes hoặc các dịch vụ đám mây. Tuy nhiên, trong khuôn khổ đồ án này, Grafana sẽ chỉ được sử dụng như một công cụ trực quan hóa dữ liệu, với nguồn dữ liệu lấy từ Prometheus, nhằm phục vụ cho việc đánh giá hiệu năng hệ thống một cách trực quan và hiệu quả.
+
+\section{Đám mây công cộng (Public Cloud)}
+
+Đám mây công cộng (Public Cloud) là một mô hình điện toán đám mây trong đó các tài nguyên điện toán (như máy chủ, lưu trữ, ứng dụng và dịch vụ) được cung cấp qua internet bởi một nhà cung cấp dịch vụ đám mây (CSP) cho nhiều người dùng.
+
+Đám mây công cộng đóng vai trò then chốt trong các ứng dụng xử lý dữ liệu IoT (Internet of Things) bằng cách mang lại nhiều lợi ích vượt trội về khả năng mở rộng, hiệu suất và chi phí. Khả năng mở rộng linh hoạt của đám mây công cộng cho phép dễ dàng điều chỉnh tài nguyên theo nhu cầu dữ liệu IoT, giúp các tổ chức xử lý lượng dữ liệu khổng lồ từ các thiết bị IoT một cách hiệu quả. Đồng thời, việc loại bỏ chi phí đầu tư vào cơ sở hạ tầng vật lý giúp tiết kiệm chi phí đáng kể cho các doanh nghiệp. Tốc độ triển khai nhanh chóng của các dịch vụ đám mây cũng giúp dễ dàng triển khai và quản lý các ứng dụng IoT. Ngoài ra, việc truy cập các công nghệ tiên tiến như AI, máy học và phân tích dữ liệu của nhà cung cấp đám mây giúp các tổ chức khai thác tối đa tiềm năng của dữ liệu IoT để cải thiện hiệu quả hoạt động và tạo ra các dịch vụ mới.
+
+Các nhà cung cấp đám mây công cộng hàng đầu:
+\begin{itemize}
+    \item Amazon Web Services (AWS)
+    \item Microsoft Azure
+    \item Google Cloud Platform (GCP)
+    \item Viettel Cloud
+\end{itemize}
+
+\section{Công cụ quản lý cơ sở hạ tầng - Terraform}
+
+Terraform \autocite{terraform} là một công cụ mã nguồn mở mạnh mẽ được phát triển bởi HashiCorp, cho phép người dùng định nghĩa và cung cấp cơ sở hạ tầng dưới dạng mã (Infrastructure as Code - IaC). Thay vì cấu hình tài nguyên một cách thủ công thông qua giao diện người dùng của các nhà cung cấp dịch vụ đám mây, Terraform sử dụng một ngôn ngữ cấu hình khai báo (Declarative Configuration Language) để mô tả trạng thái mong muốn của cơ sở hạ tầng. Điều này mang lại nhiều lợi ích quan trọng, bao gồm khả năng quản lý phiên bản, tái sử dụng cấu hình, và tự động hóa quá trình triển khai và quản lý cơ sở hạ tầng trên nhiều nhà cung cấp dịch vụ đám mây (như AWS, Azure, Google Cloud Platform) cũng như các hệ thống tại chỗ (on-premises).
+
+Với cách tiếp cận khai báo, người dùng chỉ cần định nghĩa những tài nguyên cần thiết và các thuộc tính của chúng, Terraform sẽ tự động xác định các bước cần thiết để đạt được trạng thái đó. Điều này giúp giảm thiểu sai sót do cấu hình thủ công và tăng tốc quá trình triển khai. Hơn nữa, Terraform duy trì một "trạng thái" (state) để theo dõi các tài nguyên đã được quản lý, cho phép nó thực hiện các thay đổi một cách an toàn và hiệu quả, bao gồm việc tạo mới, cập nhật hoặc xóa bỏ tài nguyên.
+
+Khả năng làm việc với nhiều nhà cung cấp dịch vụ (multi-cloud) là một trong những ưu điểm nổi bật của Terraform. Người dùng có thể quản lý cơ sở hạ tầng phức tạp trải dài trên nhiều nền tảng khác nhau bằng cùng một ngôn ngữ cấu hình và bộ công cụ. Điều này mang lại sự linh hoạt cao và tránh bị khóa chặt vào một nhà cung cấp cụ thể.
+
+Tóm lại, Terraform đóng vai trò là một giải pháp IaC linh hoạt và mạnh mẽ, giúp đơn giản hóa và tự động hóa quá trình quản lý cơ sở hạ tầng, tăng cường tính ổn định, khả năng tái sử dụng và hiệu quả trong việc triển khai và vận hành các ứng dụng và dịch vụ. Việc áp dụng Terraform đã trở thành một xu hướng quan trọng trong lĩnh vực DevOps và quản lý cơ sở hạ tầng hiện đại.
+
+\section{Học tăng cường và Q-learning}
+
+\subsection{Học tăng cường}
+
+Học tăng cường (Reinforcement Learning – RL) là một nhánh của học máy, nơi một tác nhân (agent) học cách đưa ra quyết định thông qua tương tác với môi trường. Mục tiêu của tác nhân là tìm ra một chuỗi hành động tối ưu nhằm tối đa hóa phần thưởng tích lũy theo thời gian. Không giống như học có giám sát (supervised learning), học tăng cường không dựa vào cặp dữ liệu đầu vào – đầu ra có sẵn, mà dựa vào cơ chế "thử – sai" (trial and error), nơi tác nhân học từ hậu quả của hành động mình thực hiện.
+
+\begin{figure}
+    \includegraphics[width=\textwidth]{reinforcement_learning_model.png}
+    \caption{Sơ đồ tổng quát mô hình học tăng cường}
+\end{figure}
+
+Một mô hình học tăng cường thường bao gồm 5 thành phần cơ bản:
+\begin{itemize}
+    \item Agent (Tác nhân): Thực thể đưa ra hành động.
+    \item Environment (Môi trường): Nơi tác nhân tương tác và nhận phản hồi.
+    \item State (Trạng thái): Biểu diễn trạng thái hiện tại của môi trường, bao gồm đầy đủ các thông tin để có thể đưa ra các quyết định.
+    \item Action (Hành động): Những gì tác nhân có thể thực hiện.
+    \item Reward (Phần thưởng): Phản hồi từ môi trường đánh giá chất lượng của hành động, giúp hướng dẫn tác nhân học.
+    \item Chính sách (Policy): Quy tắc quyết định hành động dựa trên trạng thái.
+\end{itemize}
+
+\subsubsection{Q-learning}
+
+Q-learning là một thuật toán học tăng cường (Reinforcement Learning) ngoài chính sách (off-policy), nhằm mục đích học một hàm giá trị Q (Q-function) để tìm ra chính sách tối ưu.
+
+Hàm giá trị Q (Q-function) ước tính tổng phần thưởng kỳ vọng khi thực hiện hành động $a$ trong trạng thái $s$ và tiếp tục theo chính sách tối ưu từ đó.
+
+Quá trình cập nhật giá trị Q được thực hiện bằng công thức:
+
+\[
+    Q(s, a) \leftarrow Q(s, a) + \alpha \left[ r + \gamma \cdot \max_{a'} Q(s', a') - Q(s, a) \right]
+\]
+
+Trong đó:
+\begin{itemize}
+    \item $s$: trạng thái hiện tại.
+    \item $a$: hành động được chọn tại trạng thái $s$.
+    \item $r$: phần thưởng nhận được sau khi thực hiện hành động $a$.
+    \item $s'$: trạng thái tiếp theo sau khi thực hiện hành động $a$.
+    \item $\alpha \in (0,1]$: hệ số học (learning rate), xác định tốc độ cập nhật.
+    \item $\gamma \in [0,1]$: hệ số chiết khấu (discount factor), thể hiện tầm quan trọng của phần thưởng tương lai.
+    \item $max_a' Q(s', a')$: Giá trị Q lớn nhất trong trạng thái tiếp theo.
+\end{itemize}
+
+Nhờ đặc tính không cần biết trước mô hình môi trường, khả năng học từ kinh nghiệm và thích nghi liên tục, Q-learning đặc biệt phù hợp để áp dụng trong các hệ thống co dãn tài nguyên, nơi mà trạng thái và điều kiện vận hành thường xuyên thay đổi theo thời gian.
+
+\subsubsection{$\epsilon$-greedy}
+
+Trong bài toán học tăng cường, một tác nhân phải thông qua việc lựa chọn các hành động để đạt được phần thưởng tối đa. Với mỗi hành động, ta có hai cách lựa chọn:
+
+\begin{itemize}
+    \item \textbf{Exploitation (khai thác)}: chọn hành động tốt nhất đã biết tại thời điểm hiện tại.
+    \item \textbf{Exploration (khám phá)}: chọn hành động ngẫu nhiên để khám phá môi trường.
+\end{itemize}
+
+Tại sao lại cần cân bằng giữa khám phá và khai thác? Với chiến lược chỉ khai thác, hệ thống sẽ bỏ lỡ những mức phần thưởng cao hơn bị ẩn dấu, có thể mắc kẹt trong cực đại địa phương. Ngược lại với chiến lược chỉ khám phá sẽ không thể tận dụng những hành động tối ưu nhằm tối đa kết quả.
+
+Hiện nay vẫn chưa có nghiên cứu nào xác định được chiến lược tối ưu để cân bằng giữa hai cách lựa chọn. Tuy nhiên chiến lược chọn hành động $\varepsilon$-greedy là thường được cân nhắc như một giải pháp đơn giản nhưng vẫn đảm bảo hiệu quả cân bằng giữa khai thác và khám phá. Trong thuật toán này, tham số $\varepsilon \in [0, 1]$ được sử dụng để điều khiển mức độ khai thác và mức độ khám phá.
+
+Với mỗi lần chọn lựa hành động, ta có thể:
+
+\begin{itemize}
+    \item Với tỷ lệ $1 - \varepsilon$ chọn hành động có giá trị Q đạt cực đại tại thời điểm đó - hành động được đánh giá là tốt nhất hiện tại, tương ứng với khai thác - exploitation.
+    \item Với xác suất $\varepsilon$ chọn ngẫu nhiên một hành động có trong tất cả các hành động có thể (bao gồm cả giá trị Q cực đại), tương ứng với khám phá - exploration.
+\end{itemize}
+
+Tương tự như chiến lược, giá trị tốt nhất của $\varepsilon$ dựa vào bài toán cụ thể chứ không có phương pháp xác định.
+
+Một phiên bản cải tiến của chiến lược này là chiến lược $\varepsilon$ giảm dần, dựa trên thực tế rằng, ban đầu tác nhân có rất ít thông tin về môi trường nên việc khai thác tại giai đoạn này hầu như không có mấy hiệu quả thay vào đó chúng ta cần khám phá trước để xây dựng nền tảng cơ bản. Sau khi có đủ lượng thông tin, lúc này ta sẽ tiến hành khai thác môi trường để tối đa phần thưởng.
+
+Chiến lược $\varepsilon$ giảm dần vẫn sẽ dựa trên chiến lược $\varepsilon$ cơ bản và sử dụng thêm một tham số $\alpha \in [0, 1]$ có vai trò giảm $\varepsilon$ theo thời gian. Vì vậy, $\alpha$ còn được gọi là decay (tạm dịch: độ giảm). Cách lựa chọn hành động vẫn tương tự: khám phá với tỷ lệ $\varepsilon$ và khai thác với tỷ lệ $1 - \varepsilon$. Tuy nhiên sau mỗi hành động, chúng ta giảm $\epsilon$ đi một lượng $\varepsilon * \alpha$, vì lý do này giá trị của $\varepsilon$ khởi đầu sẽ lớn hơn và thường là $\varepsilon = 1.0$ để đảm bảo xác suất khám phá trong giai đoạn đầu sẽ rất cao nhằm nhanh chóng thu được nhiều thông tin nhất có thể về môi trường. Cuối cùng, $\varepsilon$ sẽ giảm về một giá trị $\varepsilon_{min}$ để đảm bảo vẫn có các hành động khám phá trong môi trường nhằm thích ứng khi môi trường biến đổi cũng đồng thời cải thiện thông tin theo thời gian.
+
+\subsection{Thư viện hỗ trợ - Gymnasium}
+
+Trong lĩnh vực học tăng cường (Reinforcement Learning – RL), việc xây dựng và thử nghiệm các thuật toán hiệu quả đòi hỏi sự hỗ trợ từ những môi trường mô phỏng chuẩn hóa. Gymnasium là một thư viện mã nguồn mở, được phát triển như phần kế thừa và mở rộng từ OpenAI Gym, nhằm cung cấp một bộ công cụ thống nhất và linh hoạt để phát triển, đánh giá và so sánh các thuật toán học tăng cường.
+
+Gymnasium cho phép các nhà nghiên cứu dễ dàng tương tác với nhiều loại môi trường khác nhau – từ các bài toán cổ điển như CartPole, MountainCar cho đến các mô phỏng phức tạp trong robotics, game, tài chính, hoặc các môi trường do người dùng tự thiết kế (custom environments). Mỗi môi trường trong Gymnasium đều tuân theo một giao diện chuẩn gồm các hàm cơ bản như reset(), step(action) và các thuộc tính định nghĩa không gian quan sát (observation space) và không gian hành động (action space), từ đó giúp đảm bảo tính tương thích giữa môi trường và thuật toán học.

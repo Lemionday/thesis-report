@@ -1,4 +1,4 @@
-\documentclass[oneside,a4paper]{extreport}
+\documentclass[oneside,a4paper,12pt]{extreport}
 
 \input{styles/style}
 
@@ -7,9 +7,13 @@
 % ========================================================================================= %
 \newcommand{\tenSV}{Lương~Nhật~Hào} % Dấu ~ là khoảng trắng không được tách (các chữ nối với nhau bằng dấu ~ sẽ nằm cùng 1 dòng
 \newcommand{\mssv}{21020196}
-\newcommand{\tenKL}{Sử~dụng~LaTeX trong Khoá~luận~tốt~nghiệp} % Chú ý dấu ~ trong tên khóa luận
+\newcommand{\tenKL}{Nghiên cứu kĩ thuật co giãn tài nguyên đa cấp độ chủ động cho ứng dụng SmartHome trong môi trường điện toán đám mây}% Chú ý dấu   trong tên khóa luận
+\newcommand{\tenKLU}{NGHIÊN CỨU KĨ THUẬT CO GIÃN TÀI NGUYÊN ĐA CẤP ĐỘ CHỦ ĐỘNG CHO ỨNG DỤNG SmartHome TRONG MÔI TRƯỜNG ĐIỆN TOÁN ĐÁM MÂY}% Chú ý dấu   trong tên khóa luận
 \newcommand{\tenGVHD}{Phạm~Mạnh~Linh}
 \newcommand{\tenBM}{Công~nghệ~thông~tin-Mạng~máy~tính}
+
+\input{glossaries}
+
 \begin{document}
 
 % \fontfamily{phv}\selectfont
@@ -17,18 +21,25 @@
 \input{cover/outside.tex}
 \input{cover/inside.tex}
 
-
 % Mục lục, danh sách hình, danh sách bảng
 \addcontentsline{toc}{chapter}{Mục lục}
-\tableofcontents
+{\fontsize{12pt}{14pt}\selectfont
+    \tableofcontents
+}
+
 \listoffigures
+
 \listoftables
+
+\printglossary[type=\acronymtype, title={Danh mục viết tắt}]
 
 \input{chapters/00.tex}
 \input{chapters/01.tex}
 \input{chapters/02.tex}
-
-\input{chapters/04}
+\input{chapters/03.tex}
+\input{chapters/04.tex}
+\input{chapters/05.tex}
+\input{chapters/06.tex}
 
 % In tài liệu tham khảo
 \addcontentsline{toc}{chapter}{Tài liệu tham khảo}

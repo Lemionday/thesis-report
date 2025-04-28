@@ -20,7 +20,7 @@ Trên cơ sở đó, nghiên cứu này đề xuất giải pháp về co giãn 
 
 \section{Mô tả bài toán}
 
-Từ bài toán xử lý luồng dữ liệu lớn trong các hệ thống Smarthome thời gian thực, yêu cầu đặt ra là xây dựng một nền tảng xử lý dữ liệu mạnh mẽ, có khả năng phản hồi nhanh, chính xác và đặc biệt linh hoạt trong việc phân bổ tài nguyên.
+Từ bài toán xử lý luồng dữ liệu lớn trong các hệ thống SmartHome thời gian thực, yêu cầu đặt ra là xây dựng một nền tảng xử lý dữ liệu mạnh mẽ, có khả năng phản hồi nhanh, chính xác và đặc biệt linh hoạt trong việc phân bổ tài nguyên.
 
 Apache Storm - một hệ thống xử lý luồng dữ liệu nổi tiếng với khả năng xử lý dữ liệu đa luồng (parallelism), theo thời gian thực, phân tán và chịu lỗi - là lựa chọn phù hợp cho việc xử lý các lượng dữ liệu được truyền về từ các cảm biến hệ thống SmartHome. Tuy được thiết kế để xử lý dữ liệu phân tán rất tốt nhưng hạn chế đáng kể của Apache Storm nằm ở chỗ: nó không được thiết kế với cơ chế co giãn tài nguyên tự động và hoàn toàn phụ thuộc vào cấu hình cố định của kiến trúc hệ thống máy ảo hoặc vật lý nơi nó được triển khai.
 
@@ -28,13 +28,33 @@ Trong khi đó, public cloud (điện toán đám mây công cộng) lại nổi
 
 Đặc biệt, trong giải pháp đề xuất, các máy ảo trên đám mây được tổ chức và quản lý dưới dạng một cụm Docker (Docker cluster), bao gồm nhiều node. Tại đây, mỗi node sẽ tương ứng với một hoặc nhiều supervisor trong hệ thống Storm và toàn bộ cụm có thể được tùy biến điều chỉnh thông qua docker API rất thuận tiện trong việc quản lý. Việc sử dụng Docker giúp tạo ra một kiến trúc thống nhất, có thể hoạt động trong nhiều môi trường bất kể là điện toán đám mây hay hệ thống máy chủ có sẵn. Không những vậy, Docker còn tạo điều kiện thuận lợi cho việc tự động hóa co giãn tài nguyên ở cả mức hệ thống và dịch vụ.
 
-Thông qua giải pháp học tăng cường, tác giả muốn giải quết bài toán được đặt ra là: Làm thế nào để tích hợp khả năng co giãn chủ động - dựa trên học tăng cường q-learning - vào hệ thống xử lý dữ liệu thời gian thực Apache Storm nhằm khai thác tối đa tính mở rộng linh hoạt của public cloud?
+Thông qua giải pháp học tăng cường, tác giả muốn giải quết bài toán được đặt ra là: \textit{Làm thế nào để tích hợp khả năng co giãn chủ động - dựa trên học tăng cường q-learning - vào hệ thống xử lý dữ liệu thời gian thực Apache Storm nhằm khai thác tối đa tính mở rộng linh hoạt của public cloud?}
 
-Giải quyết bài toán này không chỉ giúp tối ưu vận hành cho ứng dụng Smarthome trong môi trường thực tiễn, mà còn nghiên cứu về xu hướng phát triển nổi bật của các hệ thống xử lý dữ liệu IoT hiện nay khi tích hợp các nền tảng xử lý dữ liệu phân tán với khả năng mở rộng linh hoạt của public cloud.
+Giải quyết bài toán này không chỉ giúp tối ưu vận hành cho ứng dụng SmartHome trong môi trường thực tiễn, mà còn nghiên cứu về xu hướng phát triển nổi bật của các hệ thống xử lý dữ liệu IoT hiện nay khi tích hợp các nền tảng xử lý dữ liệu phân tán với khả năng mở rộng linh hoạt của public cloud.
 
 \section{Đóng góp của đồ án}
 
-% TODO:
+Hệ thống trong đồ án được xây dựng dựa trên hệ thống xử lý dữ liệu lớn Storm SmartHome được tác giả Đoàn Nho Lâm xây dựng dựa trên nền tảng Apache Storm \autocite{fimocodestormsmarthome}. Trong hệ thống đã có các thành phần MQTT publisher, MQTT broker, cụm Apache Storm. Phần tiếp theo của đồ án sẽ trình bày các đóng góp của tác giả vào hệ thống có sẵn.
+
+\subsection{Storm exporter}
+
+Để phục vụ mục tiêu giám sát và đánh giá hiệu suất của hệ thống co dãn tài nguyên, tác giả đã phát triển một công cụ mang tên Storm Exporter, dựa trên công cụ cùng tên do tác giả Đỗ Anh Tú phát triển \autocite{mr4x2stormexporterprometheus}. Chương trình được viết lại bằng ngôn ngữ lập trình Go, đồng thời tích hợp Docker API để thu thập các chỉ số liên quan đến container.
+
+Dữ liệu được thu thập định kỳ, với chu kỳ lấy mẫu được cấu hình linh hoạt thông qua biến môi trường. Storm Exporter đóng vai trò như một thành phần trung gian, chịu trách nhiệm thu thập và chuyển hóa các chỉ số hoạt động (metrics) từ cụm Apache Storm cũng như cụm Docker Compose (sẽ được triển khai), đưa chúng về định dạng chuẩn để tích hợp với hệ thống giám sát như Prometheus. Ngoài ra, các chỉ số thu thập được còn đóng vai trò đầu vào cho hệ thống dự đoán dữ liệu nhằm hỗ trợ việc ra quyết định co dãn tài nguyên một cách chính xác và kịp thời.
+
+\subsection{Storm Forecast}
+
+Đây là một trong hai thành phần chính của đồ án. Chương trình này sử dụng dữ liệu đầu vào từ Storm Exporter để dự đoán nhu cầu tài nguyên của các Supervisor trong tương lai, từ đó đưa ra quyết định co dãn phù hợp. Sau mỗi hành động, chương trình tiếp nhận phản hồi từ môi trường và điều chỉnh chiến lược co dãn nhằm tối ưu hiệu suất hệ thống theo thời gian. Storm Forecast được hiện thực bằng ngôn ngữ lập trình Python, sử dụng thư viện \textit{Gymnasium} \autocite{gymnasium} giúp cung cấp một \acrshort{api} chuẩn hóa cho các bài toán học tăng cường.
+
+\subsection{Storm Autoscaler}
+
+Đây là thành phần còn lại trong kiến trúc của đồ án, chịu trách nhiệm thực thi các hành động co dãn tài nguyên (máy ảo hoặc container) theo chỉ thị được đưa ra từ Storm Forecast. Chương trình được viết bằng ngôn ngữ Go, sử dụng công cụ \textit{Pulumi} \autocite{pulumi} để quản lý và co dãn máy ảo, kết hợp với \textit{Docker Compose} để thực hiện co dãn container trong môi trường điện toán đám mây.
+
+\subsection{Đóng gói chương trình thành các image}
+
+Chương trình \textit{Storm Exporter} và \textit{Storm Forecast} đã được cung cấp tệp chỉ dẫn \texttt{Dockerfile} nhằm xây dựng các image phục vụ triển khai trong môi trường đa-container sử dụng \textit{Docker Compose}. Việc container hóa hai thành phần này cho phép tận dụng các lợi ích nổi bật của Docker, bao gồm khả năng mở rộng nhanh chóng, phân phối mã nguồn thuận tiện, tốc độ triển khai cao, và tính nhất quán khi vận hành trên nhiều nền tảng máy chủ khác nhau.
+
+Ngược lại, chương trình \textit{Storm Autoscaler} – do đặc thù cần tương tác trực tiếp với \textit{Docker Compose}, hiện vẫn chưa có giải pháp \acrshort{api} phù hợp – nên được triển khai dưới dạng một tiến trình chạy trực tiếp trên máy chủ điều khiển trong cụm Docker.
 
 \section{Cấu trúc đồ án}
 
@@ -43,27 +63,33 @@ Giải quyết bài toán này không chỉ giúp tối ưu vận hành cho ứn
 \begin{itemize}
     \item Chương 1: Giới thiệu.
           \begin{itemize}
-              \item Tổng quan về Smarthome và nhu cầu co giãn tài nguyên.
+              \item Tổng quan về SmartHome và nhu cầu co giãn tài nguyên.
               \item Mô tả bài toán và mục tiêu của đồ án.
-              \item Đóng góp và cấu trúc đồ án.
+              \item Cấu trúc đồ án.
           \end{itemize}
 
     \item Chương 2: Tổng quan về công nghệ và cơ sở lý thuyết.
           \begin{itemize}
               \item MQTT và các giao thức truyền tải dữ liệu.
               \item Tổng quan về công nghệ xử lý dữ liệu và công nghệ giám sát.
-              \item Cơ sở lý thuyết của học tăng cường q-learning.
               \item Điện toán đám mây và các dịch vụ liên quan.
+              \item Cơ sở lý thuyết của học tăng cường q-learning.
           \end{itemize}
 
-    \item Chương 3: Thiết kế và triển khai hệ thống.
+    \item Chương 3: Xây dựng giải pháp.
+    \item \begin{itemize}
+              \item Mô tả giải pháp.
+              \item Xây dựng mô hình học tăng cường.
+          \end{itemize}
+
+    \item Chương 4: Thiết kế và triển khai hệ thống.
           \begin{itemize}
               \item Thiết kế hệ thống co giãn tài nguyên dựa trên học tăng cường q-learning.
               \item Thiển khai hệ thống huấn luyện và thực nghiệm.
               \item Thiết lập mô hình giám sát, quản lý, đánh giá hiệu quả hệ thống co dãn.
           \end{itemize}
 
-    \item Chương 4: Thử nghiệm và đánh giá
+    \item Chương 5: Huấn luyện, thử nghiệm và đánh giá.
           \begin{itemize}
               \item Thiết kế các kịch bản thử nghiệm.
               \item Đánh giá hiệu suất hệ thống.
@@ -71,7 +97,7 @@ Giải quyết bài toán này không chỉ giúp tối ưu vận hành cho ứn
               \item Phân tích khả năng mở rộng của hệ thống.
           \end{itemize}
 
-    \item Chương 5: Kết luận và hướng phát triển
+    \item Chương 6: Kết luận và định hướng phát triển tiếp theo.
           \begin{itemize}
               \item Tổng kết các kết quả và đóng góp của đồ án.
               \item Thảo luận về các thách thức và hạn chế.
