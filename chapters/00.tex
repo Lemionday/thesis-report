@@ -5,14 +5,14 @@
     \end{center}
 
     \fontsize{12}{14.4}\selectfont{
-        Trong bối cảnh cuộc sống hiện đại, các thiết bị thông minh ngày càng phổ biến, hình thành nên hệ sinh thái nhà thông minh (SmartHome) dựa trên Internet vạn vật (IoT). Tuy nhiên, việc xử lý dữ liệu thời gian thực từ các cảm biến đặt ra thách thức về hiệu năng và khả năng mở rộng của hệ thống, đặc biệt khi nhiều nền tảng xử lý dữ liệu phân tán hiện nay chưa tích hợp sẵn cơ chế co giãn linh hoạt.​
+        Trong bối cảnh cuộc sống hiện đại, các thiết bị thông minh ngày càng phổ biến, hình thành nên hệ sinh thái nhà thông minh (SmartHome) dựa trên Internet vạn vật (\gls{iot}). Tuy nhiên, việc xử lý dữ liệu thời gian thực từ các cảm biến đặt ra thách thức về hiệu năng và khả năng mở rộng của hệ thống, đặc biệt khi nhiều nền tảng xử lý dữ liệu phân tán hiện nay chưa tích hợp sẵn cơ chế co dãn linh hoạt.​
 
-        Bài toán đặt ra là làm thế nào để tận dụng hiệu quả lượng dữ liệu lớn từ các cảm biến nhằm dự đoán nhu cầu tài nguyên hệ thống trong tương lai, từ đó đưa ra các quyết định điều chỉnh kịp thời, tối ưu chi phí mà vẫn đảm bảo hiệu suất vận hành. Đối với các hệ thống xử lý dữ liệu phức tạp như nhà thông minh, học tăng cường (Reinforcement Learning) nổi lên như một giải pháp tiềm năng. Khác với các phương pháp học máy truyền thống, học tăng cường cho phép hệ thống tự tương tác với môi trường để nhận phản hồi, không yêu cầu xử lý dữ liệu đầu vào phức tạp hay phân tích chi tiết mô hình hệ thống, từ đó tìm ra chiến lược tối ưu.​
+        Bài toán đặt ra là làm thế nào để tận dụng hiệu quả thông tin về sử dụng tài nguyên cho việc xử lý lượng dữ liệu lớn từ các cảm biến nhằm dự đoán nhu cầu tài nguyên hệ thống trong tương lai, từ đó đưa ra các quyết định điều chỉnh kịp thời, tối ưu chi phí mà vẫn đảm bảo hiệu suất vận hành. Đối với các hệ thống xử lý dữ liệu phức tạp như nhà thông minh, học tăng cường (Reinforcement Learning) nổi lên như một giải pháp tiềm năng. Khác với các phương pháp học máy truyền thống, học tăng cường cho phép hệ thống tự tương tác với môi trường để nhận phản hồi, không yêu cầu xử lý dữ liệu đầu vào phức tạp hay phân tích chi tiết mô hình hệ thống, từ đó tìm ra chiến lược tối ưu.​
 
-        Đồ án này đề xuất một giải pháp co giãn tài nguyên đa cấp độ chủ động cho ứng dụng Smarthome trong môi trường điện toán đám mây, với hai cấp độ: máy ảo và container phân bố trên máy ảo. Hệ thống được triển khai qua hai giai đoạn: huấn luyện và đánh giá hiệu năng, nhằm kiểm chứng khả năng thích ứng và tối ưu hóa tài nguyên của giải pháp đề xuất.
-
+        Đồ án này đề xuất giải pháp co dãn tài nguyên đa cấp độ chủ động cho ứng dụng SmartHome trong môi trường điện toán đám mây, với hai cấp độ: container trên máy ảo và phân phối các tiến trình trên các container. Hệ thống được triển khai qua hai giai đoạn: huấn luyện và đánh giá hiệu năng, nhằm kiểm chứng khả năng thích ứng và tối ưu hóa tài nguyên của giải pháp đề xuất.
     }
-    \noindent\textbf{Từ khóa}: Điện toán đám mây, Co dãn chủ động, Nhà thông minh, Học tăng cường.
+
+    \noindent\textbf{Từ khóa}: Điện toán đám mây, co/dãn chủ động, học tăng cường.
 
     \newpage
 
@@ -21,11 +21,11 @@
         \textbf{\fontsize{12}{14.4}\selectfont\uppercase{{Lời cảm ơn}}}
     \end{center}
 
-    Lời đầu tiên, em xin bày tỏ lòng biết ơn sâu sắc đến giảng viên hướng dẫn - TS.Phạm Mạnh Linh, người đã tận tình hướng dẫn, chỉ bảo và truyền đạt những kiến thức quý báu trong suốt quá trình em thực hiện đồ án này. Đồng thời, em cũng xin cảm ơn giảng viên đồng hướng dẫn - Ths. Trần Anh Tú đã chỉ hướng, giải đáp, hỗ trợ em giúp em vượt qua những khó khăn trong việc nghiên cứu và hoàn thiện đồ án một cách tốt nhất.
+    Tác giả xin chân thành cảm ơn TS. Phạm Mạnh Linh – giảng viên hướng dẫn, đã tận tình chỉ bảo và truyền đạt nhiều kiến thức quý báu trong suốt quá trình thực hiện đồ án. Đồng thời, tác giả cũng xin bày tỏ lòng biết ơn đến ThS. Trần Anh Tú – giảng viên đồng hướng dẫn, đã giải đáp thắc mắc và hỗ trợ giúp tác giả hoàn thành tốt đồ án.
 
-    Em cũng xin chân thành cảm ơn các thầy, cô cùng bạn bè trong khoa Mạng máy tính và trường Đại học Công nghệ - Đại học Quốc gia Hà Nội đã tạo điều kiện về cơ sở vật chất, trang thiết bị và môi trường học tập lý tưởng để em có thể nghiên cứu và thực hiện đồ án này cũng như hướng dẫn, chỉ bảo em trong suốt thời gian học tập tại trường.
+    Tác giả xin chân thành cảm ơn các thầy cô trong Khoa Mạng máy tính và truyền thông dữ liệu, Trường Đại học Công nghệ – Đại học Quốc gia Hà Nội, đã tạo điều kiện về cơ sở vật chất, trang thiết bị và môi trường học tập lý tưởng giúp tác giả thực hiện nghiên cứu này. Tác giả cũng cảm ơn các bạn học và đồng nghiệp đã đóng góp ý kiến quý báu và động viên tác giả trong suốt quá trình học tập và làm đồ án.
 
-    Cuối cùng, em xin gửi lời cảm ơn đến bạn bè, đồng nghiệp, người thân vì sự hỗ trợ nhiệt tình, những ý kiến đóng góp quý báu kèm với sự động viên tinh thân vô cùng to lớn mà họ đã dành cho em trong suốt thời gian qua.
+    Cuối cùng, tác giả trân trọng gửi lời cảm ơn đến gia đình và những người thân đã luôn ủng hộ và khích lệ tác giả trong thời gian thực hiện đồ án.
 
     \begin{flushright}
         \begin{minipage}{0.6\linewidth}
@@ -44,9 +44,10 @@
         \textbf{\fontsize{12}{14.4}\selectfont\uppercase{{Lời cam đoan}}}
     \end{center}
 
-    Tôi xin cam đoan rằng khóa luận tốt nghiệp với đề tài "\tenKL" là công trình nghiên cứu do chính tôi thực hiện. Các số liệu, kết quả và tài liệu trình bày trong khóa luận đều trung thực và chưa từng được công bố trong bất kỳ công trình nào khác, trừ những tài liệu tham khảo đã được trích dẫn rõ ràng trong danh mục tài liệu tham khảo.
+    Tác giả cam kết rằng đồ án tốt nghiệp này với đề tài “Nghiên cứu các kỹ thuật co dãn tài nguyên đa cấp độ chủ động cho ứng dụng SmartHome trong môi trường điện toán đám mây” là công trình nghiên cứu do chính tác giả thực hiện. Các số liệu, kết quả và nội dung trình bày trong đồ án đều trung thực và chưa từng được công bố trong bất kỳ công trình nào khác, ngoại trừ các tài liệu tham khảo đã được trích dẫn.
 
-    Tôi xin chịu hoàn toàn trách nhiệm về tính chính xác và trung thực của nội dung khóa luận này.
+    Tác giả chịu trách nhiệm hoàn toàn về tính chính xác và trung thực của nội dung đồ án này.
+
     \begin{flushright}
         \begin{minipage}{0.6\linewidth}
             \begin{center}

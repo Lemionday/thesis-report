@@ -25,9 +25,30 @@
 % Tài liệu tham khảo
 \usepackage[
     sorting=nty,
+    backend=biber,
+    language=english,
     % backend=bibtex,
     defernumbers=true]{biblatex}
 \usepackage[unicode]{hyperref} % Bookmark tiếng Việt
+% Override biblatex strings with Vietnamese
+\DefineBibliographyStrings{english}{
+    bibliography = {Tài liệu tham khảo},
+    references   = {Tài liệu tham khảo},
+    and          = {và},
+    in           = {trong},
+    editor       = {Biên tập},
+    editors      = {Biên tập},
+    translator   = {Dịch giả},
+    page         = {trang},
+    pages        = {trang},
+    volume       = {tập},
+    number       = {số},
+    % journal      = {Tạp chí},
+    urlseen      = {truy cập ngày},
+    % online       = {Trực tuyến},
+    % date         = {ngày},
+    edition      = {ấn bản},
+}
 \addbibresource{references.bib}
 
 % Đổi tên mặc định
@@ -82,3 +103,4 @@
 \usepackage{hyperref}
 
 \usepackage{amsmath}
+\usepackage{amssymb}

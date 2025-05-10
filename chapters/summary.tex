@@ -1,0 +1,25 @@
+\section*{Giới thiệu}
+
+Trong bối cảnh cuộc sống hiện đại ngày càng được tự động hóa, các thiết bị thông minh dần trở thành một phần không thể thiếu trong không gian sống của con người. Hệ sinh thái nhà thông minh (\textit{SmartHome}), được hình thành dựa trên sự kết nối giữa các thiết bị thông qua nền tảng Internet vạn vật (\textit{Internet of Things – IoT}), đang phát triển với tốc độ chóng mặt, kéo theo nhu cầu xử lý khối lượng lớn dữ liệu cảm biến phát sinh theo thời gian thực.
+
+Tuy nhiên, việc xử lý hiệu quả các luồng dữ liệu này đặt ra nhiều thách thức, đặc biệt trong điều kiện dữ liệu liên tục thay đổi và phát sinh không đồng đều. Hệ thống xử lý cần đảm bảo vừa \textit{nhanh chóng}, vừa \textit{chính xác}, đồng thời phải duy trì khả năng \textit{mở rộng linh hoạt}. Thực tế cho thấy, nhiều nền tảng xử lý dữ liệu phân tán hiện nay vẫn chưa tích hợp sẵn các cơ chế co/dãn tài nguyên chủ động, dẫn đến tình trạng quá tải khi dữ liệu tăng cao hoặc lãng phí tài nguyên khi lưu lượng thấp.
+
+Bài toán đặt ra là: làm thế nào để khai thác hiệu quả các chỉ số liên quan đến tài nguyên (CPU, bộ nhớ, tiến trình, \textit{etc.}) nhằm dự đoán nhu cầu tài nguyên trong tương lai và đưa ra các quyết định điều chỉnh hệ thống kịp thời – từ đó vừa tối ưu hóa hiệu suất vận hành, vừa giảm thiểu chi phí sử dụng hạ tầng. Trong bối cảnh đó, \textit{học tăng cường (Reinforcement Learning)} nổi lên như một giải pháp tiềm năng: khác với các phương pháp học máy truyền thống, nó cho phép hệ thống chủ động tương tác với môi trường, thu nhận phản hồi, điều chỉnh chiến lược theo thời gian mà không yêu cầu mô hình hóa phức tạp về cấu trúc hệ thống hay dữ liệu đầu vào.
+
+Xuất phát từ thực tiễn đó, đồ án này đề xuất một \textbf{giải pháp co/dãn tài nguyên đa cấp độ chủ động} dành cho hệ thống \textit{SmartHome} triển khai trên nền tảng điện toán đám mây. Giải pháp hoạt động trên hai cấp độ:
+\begin{itemize}
+    \item Cấp độ 1: Điều chỉnh số lượng container (\textit{supervisor}) thông qua thao tác co/dãn trên máy ảo.
+    \item Cấp độ 2: Phân phối lại các tiến trình (\textit{spout}, \textit{bolt}) trên các container hiện có sao cho tương thích với trạng thái tài nguyên mới.
+\end{itemize}
+
+Để hiện thực hóa giải pháp, tác giả đã phát triển và tích hợp thêm ba thành phần chính vào hệ thống ban đầu:
+
+\begin{itemize}
+    \item \textbf{Storm Exporter} – thành phần chịu trách nhiệm thu thập các chỉ số vận hành từ hệ thống như mức sử dụng CPU, bộ nhớ, trạng thái tiến trình, \textit{etc.}, và xuất chúng dưới định dạng tiêu chuẩn để phục vụ cho quá trình học và dự đoán.
+
+    \item \textbf{Storm Forecast} – mô hình học tăng cường có nhiệm vụ dự đoán số lượng \textit{supervisor} cần thiết trong tương lai, dựa trên các chuỗi dữ liệu vận hành thu thập được từ hệ thống. Thành phần này không can thiệp trực tiếp vào quá trình phân bổ tiến trình, mà chỉ đưa ra quyết định về quy mô tài nguyên trong những bước thời gian sắp tới.
+
+    \item \textbf{Storm Autoscaler} – thành phần thực hiện hành động co/dãn số lượng \textit{supervisor} dựa trên chỉ thị từ \textit{Storm Forecast}. Sau mỗi hành động co/dãn, thành phần này cũng chịu trách nhiệm thông báo số lượng \textit{supervisor} mới tới hệ thống Storm. Việc phân phối lại các tiến trình (\textit{spout}, \textit{bolt}) được hệ thống Storm tự động thực hiện, giúp đảm bảo tính đồng nhất giữa trạng thái tài nguyên mới và cấu trúc xử lý bên trong hệ thống.
+\end{itemize}
+
+Toàn bộ hệ thống được triển khai và đánh giá thông qua hai giai đoạn chính: giai đoạn \textit{huấn luyện} trong môi trường giả lập nhằm học chính sách điều khiển, và giai đoạn \textit{đánh giá hiệu năng} trong môi trường điện toán đám mây, nhằm kiểm nghiệm tính thích nghi và hiệu quả tối ưu tài nguyên của giải pháp đề xuất.
